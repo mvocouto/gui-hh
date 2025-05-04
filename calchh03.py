@@ -2,24 +2,54 @@ import holidays
 from datetime import date
 
 def calcular_inss(salario_bruto):
-    # ... (função calcular_inss como antes)
+    """Calcula o valor da contribuição ao INSS com base nas alíquotas de 2025."""
+    if salario_bruto <= 1412.00:
+        return salario_bruto * 0.075
+    elif salario_bruto <= 2666.64:
+        return salario_bruto * 0.09 - 21.18
+    elif salario_bruto <= 4000.39:
+        return salario_bruto * 0.12 - 80.38
+    elif salario_bruto <= 7786.02:
+        return salario_bruto * 0.14 - 160.78
+    else:
+        return 7786.02 * 0.14 - 160.78  # Teto do INSS
 
 def calcular_irrf(salario_base, inss):
-    # ... (função calcular_irrf como antes)
+    """Calcula o valor do Imposto de Renda Retido na Fonte (IRRF) com base nas alíquotas de 2025."""
+    base_calculo = salario_base - inss
+    if base_calculo <= 2259.20:
+        return 0.0
+    elif base_calculo <= 2826.65:
+        return base_calculo * 0.075 - 169.44
+    elif base_calculo <= 3751.05:
+        return base_calculo * 0.15 - 381.44
+    elif base_calculo <= 4664.68:
+        return base_calculo * 0.225 - 662.77
+    else:
+        return base_calculo * 0.275 - 896.00
 
 def calcular_hora_extra(salario_base, horas_trabalhadas_mes, adicional_percentual, horas_extras):
-    # ... (função calcular_hora_extra como antes)
+    """Calcula o valor das horas extras com um determinado adicional."""
+    if horas_trabalhadas_mes <= 0:
+        return "Erro: O número de horas trabalhadas no mês deve ser maior que zero."
+    if horas_extras < 0:
+        return "Erro: O número de horas extras não pode ser negativo."
+
+    valor_hora_normal = salario_base / horas_trabalhadas_mes
+    valor_hora_extra = valor_hora_normal * (1 + (adicional_percentual / 100))
+    valor_total_horas_extras = valor_hora_extra * horas_extras
+    return valor_total_horas_extras
 
 def calcular_dsr_sobre_he(valor_total_horas_extras, dias_uteis):
     """Calcula o valor do Descanso Semanal Remunerado (DSR) sobre as horas extras."""
     if dias_uteis <= 0:
         return 0.0
-    # O número de domingos e feriados será calculado separadamente
+    # O número de domingos e feriados será calculado fora da função
     return (valor_total_horas_extras / dias_uteis)
 
 def get_dias_uteis_domingos_feriados(ano, mes):
     """Calcula os dias úteis, domingos e feriados no Brasil (RJ) para um dado mês e ano."""
-    rj_holidays = holidays.country_holidays('BR', state='RJ', years=ano)
+    rj_holidays = holidays.CountryHoliday("BR", state="RJ", years=ano)
     dias_uteis = 0
     domingos = 0
     feriados = 0
@@ -38,10 +68,10 @@ def get_dias_uteis_domingos_feriados(ano, mes):
     return dias_uteis, domingos, feriados
 
 # *** INSERA SEUS DADOS AQUI ***
-seu_salario_base = 3500.00
+seu_salario_base = 13500.00
 suas_horas_mensais_contrato = 200
-suas_horas_extras_60 = 3.0
-suas_horas_extras_120 = 2.0
+suas_horas_extras_60 = 0.0
+suas_horas_extras_120 = 15.0
 ano_calculo = 2025
 mes_calculo = 5  # Maio (1 para Janeiro, 12 para Dezembro)
 
