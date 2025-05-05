@@ -121,3 +121,13 @@ def calcular_tudo():
         messagebox.showerror("Erro", "Por favor, insira valores numéricos válidos.")
     except Exception as e:
         messagebox.showerror("Erro", f"Ocorreu um erro: {e}")
+
+# --- Criação da Interface Gráfica ---
+root = tk.Tk()
+root.title("Calculadora de Horas Extras")
+
+# Campos de Entrada
+mes_label = ttk.Label(root, text="Mês:")
+mes_label.grid(row=0, column=0, sticky=tk.W, padx=5, pady=5)
+mes_entry = ttk.Entry(root)
+mes_entry.grid(row=0, column=1, sticky=tk.EW
